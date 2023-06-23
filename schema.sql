@@ -3,3 +3,5 @@ CREATE TABLE entries (
     value TEXT NOT NULL,
     completed BOOLEAN
 );
+
+INSERT INTO entries VALUES (NULL, "myentry", FALSE), (NULL, "done", TRUE);
