@@ -1,13 +1,9 @@
 import json
 import sqlite3
-from typing import TypeAlias
 
 import flask
 
 app = flask.Flask(__name__)
-JSON: TypeAlias = (
-    dict[str, "JSON"] | list["JSON"] | str | int | float | bool | None
-)
 
 
 @app.route("/")
@@ -17,7 +13,7 @@ def hello_world() -> str:
 
 # curl localhost:8888/getEntries
 @app.route("/getEntries")
-def get_entries() -> JSON:
+def get_entries() -> str:
     cursor = sqlite3.connect("db.db").cursor()
     cursor.execute("SELECT * FROM entries;")
     cols = [col[0] for col in cursor.description]
@@ -32,8 +28,8 @@ def get_entries() -> JSON:
 
 # curl -X POST "localhost:8888/insert?entry=new"
 @app.route("/insert", methods=["POST"])
-def insert_item() -> None:
-    new = flask.request.args['entry']
+def insert_item() -> flask.Response:
+    new = flask.request.args["entry"]
 
     conn = sqlite3.connect("db.db")
     cur = conn.cursor()
@@ -41,13 +37,13 @@ def insert_item() -> None:
     conn.commit()
     conn.close()
 
-    return flask.Response(status=201) 
+    return flask.Response(status=201)
 
 
 # curl -X PUT "localhost:8888/complete?entry_id=3"
 @app.route("/complete", methods=["PUT"])
-def mark_complete():
-    update_id = flask.request.args['entry_id']
+def mark_complete() -> flask.Response:
+    update_id = flask.request.args["entry_id"]
 
     conn = sqlite3.connect("db.db")
     cur = conn.cursor()
@@ -55,13 +51,13 @@ def mark_complete():
     conn.commit()
     conn.close()
 
-    return flask.Response(status=201) 
+    return flask.Response(status=201)
 
 
 # curl -X PUT "localhost:8888/incomplete?entry_id=3"
 @app.route("/incomplete", methods=["PUT"])
-def mark_incomplete():
-    update_id = flask.request.args['entry_id']
+def mark_incomplete() -> flask.Response:
+    update_id = flask.request.args["entry_id"]
 
     conn = sqlite3.connect("db.db")
     cur = conn.cursor()
@@ -69,7 +65,7 @@ def mark_incomplete():
     conn.commit()
     conn.close()
 
-    return flask.Response(status=201) 
+    return flask.Response(status=201)
 
 
 if __name__ == "__main__":
