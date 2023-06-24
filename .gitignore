@@ -1,2 +1,5 @@
 venv
 db.db
+.mypy_cache
+node_modules
+build
