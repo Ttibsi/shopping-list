@@ -15,6 +15,7 @@ def hello_world() -> str:
     return "<p>Hello, World!</p>"
 
 
+# curl localhost:8888/getEntries
 @app.route("/getEntries")
 def get_entries() -> JSON:
     cursor = sqlite3.connect("db.db").cursor()
@@ -29,9 +30,10 @@ def get_entries() -> JSON:
     return json_ret
 
 
+# curl -X POST "localhost:8888/insert?entry=new"
 @app.route("/insert", methods=["POST"])
 def insert_item() -> None:
-    new = flask.request.json.get("entry")
+    new = flask.request.args['entry']
 
     conn = sqlite3.connect("db.db")
     cur = conn.cursor()
@@ -39,10 +41,13 @@ def insert_item() -> None:
     conn.commit()
     conn.close()
 
+    return flask.Response(status=201) 
 
+
+# curl -X PUT "localhost:8888/complete?entry_id=3"
 @app.route("/complete", methods=["PUT"])
 def mark_complete():
-    update_id = flask.request.json.get("entry_id")
+    update_id = flask.request.args['entry_id']
 
     conn = sqlite3.connect("db.db")
     cur = conn.cursor()
@@ -50,12 +55,13 @@ def mark_complete():
     conn.commit()
     conn.close()
 
-    return 0
+    return flask.Response(status=201) 
 
 
+# curl -X PUT "localhost:8888/incomplete?entry_id=3"
 @app.route("/incomplete", methods=["PUT"])
 def mark_incomplete():
-    update_id = flask.request.json.get("entry_id")
+    update_id = flask.request.args['entry_id']
 
     conn = sqlite3.connect("db.db")
     cur = conn.cursor()
@@ -63,7 +69,7 @@ def mark_incomplete():
     conn.commit()
     conn.close()
 
-    return 0
+    return flask.Response(status=201) 
 
 
 if __name__ == "__main__":
