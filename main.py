@@ -1,9 +1,13 @@
 import json
 import sqlite3
+from typing import Any
 
 import flask
+import flask_cors
 
 app = flask.Flask(__name__)
+cors = flask_cors.CORS(app)
+# app.config['CORS_HEADERS'] = 'Content-Type'
 
 
 @app.route("/")
@@ -13,17 +17,18 @@ def hello_world() -> str:
 
 # curl localhost:8888/getEntries
 @app.route("/getEntries")
-def get_entries() -> str:
+def get_entries() -> flask.Response:
     cursor = sqlite3.connect("db.db").cursor()
     cursor.execute("SELECT * FROM entries;")
     cols = [col[0] for col in cursor.description]
 
-    ret = []
+    ret: dict[str, Any] = {"values": []}
     for value in cursor.fetchall():
-        ret.append(dict(zip(cols, value)))
+        ret["values"].append(dict(zip(cols, value)))
 
-    json_ret = json.dumps(ret)
-    return json_ret
+    resp = flask.Response(json.dumps(ret), status=201)
+    resp.headers["Access-Control-Allow-Origin"] = "*"
+    return resp
 
 
 # curl -X POST "localhost:8888/insert?entry=new"
