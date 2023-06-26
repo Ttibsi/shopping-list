@@ -4,8 +4,6 @@
   "description": "A web application shopping list app - I'm using this to gain some experience with Flask and to learn typescript",
   "main": "index.js",
   "scripts": {
-    "go": "npx tsc && firefox index.html",
-    "test": "echo \"Error: no test specified\" && exit 1",
   },
   "keywords": [],
   "author": "",

@@ -1,17 +1,8 @@
 // Make API calls
-class shoppingItem {
-    constructor( public id: number, public value: string, public completed: boolean) {}
-}
-
-async function getItems(): Promise<shoppingItem[]> {
-    try {
-        return await fetch("http://localhost:8888/getEntries").then((data) => {
-            return JSON.parse(data.body).map((obj: {id: number, value:string, completed:boolean}) => new shoppingItem(obj.id, obj.value, obj.completed)
-        })
-    } catch (err) {
-        console.error(err)
-        throw err
-    }
+interface ShoppingItem {
+    id: number
+    value: string
+    completed: boolean
 }
 
 // Pass data to html
@@ -24,10 +15,12 @@ if (app) {
 `
 }
 
-const list = document.getElementById("list") as HTMLUListElement
-if (list) {
-    let content = getItems() as Promise<string>
-    for (const item in content) {
-        list.innerHTML += `<li>${item.value}</li>`
+let val = fetch("http://localhost:8888/getEntries").then(response => response.json()).then(vals => {
+    const list = document.getElementById("list") as HTMLUListElement
+    if (list) {
+        vals.values.forEach((obj: ShoppingItem) => {
+            // console.log("entry is " + obj.id)
+            list.innerHTML += `<li>${obj.value}</li>`
+        })
     }
-}
+})

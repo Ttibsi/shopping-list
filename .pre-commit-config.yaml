@@ -31,3 +31,7 @@ repos:
     rev: v2.3.0
     hooks:
     -   id: setup-cfg-fmt
+-   repo: https://github.com/pre-commit/mirrors-eslint
+    rev: 'v8.43.0'
+    hooks:
+    -   id: eslint
