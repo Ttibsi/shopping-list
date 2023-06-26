@@ -1,0 +1,32 @@
+body {
+    background-color: lightgrey;
+}
+
+#app {
+    padding: 1rem;
+    margin: 1rem;
+}
+
+#frame {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    border: 1px;
+    border-style: solid;
+    border-color: black;
+}
+
+#frame li {
+    font-size: 2rem;
+    list-style-type: none;
+}
+
+.cmpltd {
+    text-decoration: line-through;
+}
+
+.cmpltd_btn {
+    background-color: red;
+}

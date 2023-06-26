@@ -4,11 +4,12 @@
   "description": "A web application shopping list app - I'm using this to gain some experience with Flask and to learn typescript",
   "main": "index.js",
   "scripts": {
+        "livereload":"venv/bin/python3 -m http.server",
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
     "typescript": "^5.1.3",
     "typescript-language-server": "^3.3.2"
   }
