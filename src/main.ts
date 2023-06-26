@@ -10,20 +10,29 @@ const app = document.getElementById("app") as HTMLDivElement
 if (app) {
     app.innerHTML = `
     <div id="frame">
-        <ul id='list'></ul>
     </div>
 `
 }
 
 fetch("http://localhost:8888/getEntries").then(response => response.json()).then(vals => {
-    const list = document.getElementById("list") as HTMLUListElement
+    const list = document.getElementById("frame") as HTMLDivElement
     if (list) {
         vals.values.forEach((obj: ShoppingItem) => {
-            // console.log("entry is " + obj.id)
+            console.log("entry is " + obj.id)
             if (obj.completed) {
-                list.innerHTML += `<li class="cmpltd"><button class="cmpltd_btn"></button>${obj.value}</li>`
+                list.innerHTML += `
+                    <label class="container complete">${obj.value}
+                        <input type="checkbox" checked="checked"> 
+                        <span class="checkmark"></span>
+                    </label>
+                `
             } else {
-                list.innerHTML += `<li><button></button>${obj.value}</li>`
+                list.innerHTML += `
+                    <label class="container">${obj.value}
+                        <input type="checkbox"> 
+                        <span class="checkmark"></span>
+                    </label>
+                `
             }
         })
     }
