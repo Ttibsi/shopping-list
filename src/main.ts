@@ -1,46 +1,43 @@
-// Make API calls
 interface ShoppingItem {
     id: number
     value: string
     completed: boolean
 }
 
-// Pass data to html
-const app = document.getElementById("app") as HTMLDivElement
-if (app) {
-    app.innerHTML = `
-    <div id="frame">
-    </div>
-`
+function generateContainer(obj: ShoppingItem): HTMLDivElement {
+    const container = document.createElement("div") as HTMLDivElement
+    container.className = "container"
+
+    const input = document.createElement("input")
+    input.type = "checkbox"
+    input.name = obj.id.toString()
+    input.checked = obj.completed
+
+    const label = document.createElement("label")
+    label.htmlFor = obj.id.toString()
+    label.className = obj.completed ? "complete" : ""
+    label.textContent = obj.value
+
+    container.append(input)
+    container.append(label)
+    return container
 }
 
-fetch("http://localhost:8888/getEntries").then(response => response.json()).then(vals => {
-    const list = document.getElementById("frame") as HTMLDivElement
-    if (list) {
-        vals.values.forEach((obj: ShoppingItem) => {
-            console.log("entry is " + obj.id)
-            if (obj.completed) {
-                list.innerHTML += `
-                    <label class="container complete">${obj.value}
-                        <input type="checkbox" checked="checked"> 
-                        <span class="checkmark"></span>
-                    </label>
-                `
-            } else {
-                list.innerHTML += `
-                    <label class="container">${obj.value}
-                        <input type="checkbox"> 
-                        <span class="checkmark"></span>
-                    </label>
-                `
-            }
-        })
-    }
-})
+const app = document.getElementById("app")
+if (app) {
+    const frame = document.createElement("div")
+    frame.id = "frame"
+    app.appendChild(frame)
 
-// Instead of bullet points, lets do this as a button so we can change
-// how it's displayed. In the CSS we remove the li bullet points, and here we
-// prepend the text with a button and style it in CSS. If obj.completed === True
-// we then add a class to the html button to change how it looks if the item
-// is complete. Can we also update the css of the text if the button has is true
-// or should we just also give it a class in the JS amending
+    fetch("http://localhost:8888/getEntries")
+        .then((response) => response.json())
+        .then((vals) => {
+            vals.values.forEach((obj: ShoppingItem) => {
+                frame.appendChild(generateContainer(obj))
+            })
+        })
+
+    //TODO: Add entry box and make POST query
+}
+
+// TODO: Update elements and make PUT queries on tickbox click
