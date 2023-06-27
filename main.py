@@ -6,7 +6,7 @@ import flask
 import flask_cors
 
 app = flask.Flask(__name__)
-cors = flask_cors.CORS(app)
+cors = flask_cors.CORS(app, resources={r"/*": {"origins": "http://localhost:*"}})
 # app.config['CORS_HEADERS'] = 'Content-Type'
 
 

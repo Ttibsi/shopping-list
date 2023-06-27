@@ -18,6 +18,24 @@ function generateContainer(obj: ShoppingItem): HTMLDivElement {
     label.className = obj.completed ? "complete" : ""
     label.textContent = obj.value
 
+    input.addEventListener("change", (_) => {
+        if (obj.completed) {
+            // It was already ticked and is being unticked
+            fetch("localhost:8888/incomplete?entry_id=" + obj.id.toString(), {
+                method: "PUT",
+                mode: "no-cors",
+            })
+        } else {
+            fetch("localhost:8888/complete?entry_id=" + obj.id.toString(), {
+                method: "PUT",
+                mode: "no-cors",
+            })
+        }
+
+        // Update label
+        label.className = obj.completed ? "complete" : ""
+    })
+
     container.append(input)
     container.append(label)
     return container
