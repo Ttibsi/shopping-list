@@ -43,3 +43,12 @@ repos:
         -   id: eslint
             files: ts
             types: [file]
+    - repo: local
+      hooks:
+        - id: tsc
+          name: tsc
+          entry: tsc
+          language: node
+          pass_filenames: false
+          always_run: true
+          additional_dependencies: [typescript]

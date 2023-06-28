@@ -20,7 +20,6 @@ function generateContainer(obj: ShoppingItem): HTMLDivElement {
 
     input.addEventListener("change", (_) => {
         obj.completed = input.checked
-        console.log("update")
         if (obj.completed) {
             fetch(
                 "http://localhost:8888/complete?entry_id=" + obj.id.toString(),
@@ -62,4 +61,28 @@ if (app) {
         })
 
     //TODO: Add entry box and make POST query
+    const entry = document.createElement("div")
+    entry.className = "container entrybar"
+
+    const txt = document.createElement("input")
+    txt.addEventListener("keyup", (event) => {
+        if (event.key == "Enter") {
+            const val = { new_entry: txt.value }
+
+            const ret = fetch("http://localhost:8888/insert", {
+                method: "POST",
+                mode: "cors",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(val),
+            })
+
+            console.log(ret)
+            location.reload()
+        }
+    })
+
+    entry.append(txt)
+    frame.appendChild(entry)
 }

@@ -12,7 +12,10 @@ body {
     margin: auto;
     margin-top: 2em;
 
-    display: grid;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    order: 1;
     background-color: #d0d0d0;
 }
 
@@ -24,6 +27,7 @@ body {
 
     display: grid;
     grid-template-columns: 1em auto;
+    order: 1;
     gap: 0.5em;
 }
 
@@ -66,4 +70,8 @@ input[type="checkbox"]:checked::before {
 input[type="checkbox"]:focus {
     outline: max(1px, 0.15em) solid currentColor;
     outline-offset: max(1px, 0.15em);
+}
+
+.container.entrybar {
+    order: 2;
 }
