@@ -19,17 +19,23 @@ function generateContainer(obj: ShoppingItem): HTMLDivElement {
     label.textContent = obj.value
 
     input.addEventListener("change", (_) => {
+        obj.completed = input.checked
+        console.log("update")
         if (obj.completed) {
-            // It was already ticked and is being unticked
-            fetch("localhost:8888/incomplete?entry_id=" + obj.id.toString(), {
-                method: "PUT",
-                mode: "no-cors",
-            })
+            fetch(
+                "http://localhost:8888/complete?entry_id=" + obj.id.toString(),
+                {
+                    method: "PUT",
+                }
+            )
         } else {
-            fetch("localhost:8888/complete?entry_id=" + obj.id.toString(), {
-                method: "PUT",
-                mode: "no-cors",
-            })
+            fetch(
+                "http://localhost:8888/incomplete?entry_id=" +
+                    obj.id.toString(),
+                {
+                    method: "PUT",
+                }
+            )
         }
 
         // Update label
@@ -57,5 +63,3 @@ if (app) {
 
     //TODO: Add entry box and make POST query
 }
-
-// TODO: Update elements and make PUT queries on tickbox click
