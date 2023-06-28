@@ -35,7 +35,7 @@ def get_entries() -> flask.Response:
 # curl -X POST "localhost:8888/insert?entry=new"
 @app.route("/insert", methods=["POST"])
 def insert_item() -> flask.Response:
-    new = flask.request.json["new_entry"]
+    new: str = flask.request.get_json(True)["new_entry"]
 
     conn = sqlite3.connect("db.db")
     cur = conn.cursor()

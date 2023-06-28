@@ -46,6 +46,15 @@ function generateContainer(obj: ShoppingItem): HTMLDivElement {
     return container
 }
 
+async function sendToBack(name: object) {
+    await fetch("http://localhost:8888/insert", {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(name),
+    })
+}
+
 const app = document.getElementById("app")
 if (app) {
     const frame = document.createElement("div")
@@ -67,18 +76,10 @@ if (app) {
     const txt = document.createElement("input")
     txt.addEventListener("keyup", (event) => {
         if (event.key == "Enter") {
-            const val = { new_entry: txt.value }
-            console.log("requesting: " + val)
-
-            const ret = fetch("http://localhost:8888/insert", {
-                method: "POST",
-                mode: "no-cors",
-                headers: { "Content-Type": "application/json", },
-                body: JSON.stringify(val),
-            })
-
-            console.log(ret)
-            location.reload()
+            //TODO: Update front end after this -- don't just refresh because 
+            // it's bad practice -- I think I want to get back the same data 
+            // fromm this endpoint and then load it into DOM that way
+            sendToBack({ new_entry: txt.value })
         }
     })
 
