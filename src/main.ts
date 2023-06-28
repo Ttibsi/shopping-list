@@ -68,13 +68,12 @@ if (app) {
     txt.addEventListener("keyup", (event) => {
         if (event.key == "Enter") {
             const val = { new_entry: txt.value }
+            console.log("requesting: " + val)
 
             const ret = fetch("http://localhost:8888/insert", {
                 method: "POST",
-                mode: "cors",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                mode: "no-cors",
+                headers: { "Content-Type": "application/json", },
                 body: JSON.stringify(val),
             })
 
