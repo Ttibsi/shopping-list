@@ -25,7 +25,7 @@ function generateContainer(obj: ShoppingItem): HTMLDivElement {
     label.textContent = obj.value
     label.title = "Click to delete item..."
 
-    label.addEventListener("click", (_) => {
+    label.addEventListener("click", () => {
         fetch("http://localhost:8888/remove?entry_id=" + obj.id.toString(), {
             method: "DELETE",
         })
@@ -34,7 +34,7 @@ function generateContainer(obj: ShoppingItem): HTMLDivElement {
         container.remove()
     })
 
-    input.addEventListener("change", (_) => {
+    input.addEventListener("change", () => {
         obj.completed = input.checked
         getID(obj.value).then((id_from_db) => {
             if (obj.completed) {
@@ -48,7 +48,7 @@ function generateContainer(obj: ShoppingItem): HTMLDivElement {
                     "http://localhost:8888/incomplete?entry_id=" + id_from_db,
                     {
                         method: "PUT",
-                    }
+                    },
                 )
                     .then((response) => response.json())
                     .then((jsonbody) => console.log(jsonbody))
@@ -74,40 +74,42 @@ async function sendToBack(name: object) {
 }
 
 const app = document.getElementById("app")
-if (app) {
-    const frame = document.createElement("div")
-    frame.id = "frame"
-    app.appendChild(frame)
+if (!app) {
+    throw new Error("div 'app' not found")
+}
 
-    fetch("http://localhost:8888/getEntries")
-        .then((response) => response.json())
-        .then((vals) => {
-            vals.values.forEach((obj: ShoppingItem) => {
-                frame.appendChild(generateContainer(obj))
-            })
+const frame = document.createElement("div")
+frame.id = "frame"
+app.appendChild(frame)
+
+fetch("http://localhost:8888/getEntries")
+    .then((response) => response.json())
+    .then((vals) => {
+        vals.values.forEach((obj: ShoppingItem) => {
+            frame.appendChild(generateContainer(obj))
         })
-
-    const entry = document.createElement("div")
-    entry.className = "container entrybar"
-
-    const txt = document.createElement("input")
-    txt.placeholder = "Enter new item..."
-    txt.addEventListener("keyup", (event) => {
-        if (event.key == "Enter") {
-            sendToBack({ new_entry: txt.value })
-
-            frame.appendChild(
-                generateContainer({
-                    id: document.querySelectorAll("completed").length,
-                    value: txt.value,
-                    completed: false,
-                })
-            )
-
-            txt.value = ""
-        }
     })
 
-    entry.append(txt)
-    frame.appendChild(entry)
-}
+const entry = document.createElement("div")
+entry.className = "container entrybar"
+
+const txt = document.createElement("input")
+txt.placeholder = "Enter new item..."
+txt.addEventListener("keyup", (event) => {
+    if (event.key == "Enter") {
+        sendToBack({ new_entry: txt.value })
+
+        frame.appendChild(
+            generateContainer({
+                id: document.querySelectorAll("completed").length,
+                value: txt.value,
+                completed: false,
+            }),
+        )
+
+        txt.value = ""
+    }
+})
+
+entry.append(txt)
+frame.appendChild(entry)
