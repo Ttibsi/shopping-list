@@ -4,6 +4,12 @@ interface ShoppingItem {
     completed: boolean
 }
 
+async function getID(value: string): Promise<string> {
+    const response = await fetch("http://localhost:8888/check?name=" + value)
+    const ret = await response.text()
+    return ret
+}
+
 function generateContainer(obj: ShoppingItem): HTMLDivElement {
     const container = document.createElement("div") as HTMLDivElement
     container.className = "container"
@@ -29,26 +35,24 @@ function generateContainer(obj: ShoppingItem): HTMLDivElement {
 
     input.addEventListener("change", (_) => {
         obj.completed = input.checked
-        if (obj.completed) {
-            fetch(
-                "http://localhost:8888/complete?entry_id=" + obj.id.toString(),
-                {
+        getID(obj.value).then((id_from_db) => {
+            if (obj.completed) {
+                fetch("http://localhost:8888/complete?entry_id=" + id_from_db, {
                     method: "PUT",
-                }
-            )
-                .then((response) => response.json())
-                .then((jsonbody) => console.log(jsonbody))
-        } else {
-            fetch(
-                "http://localhost:8888/incomplete?entry_id=" +
-                    obj.id.toString(),
-                {
-                    method: "PUT",
-                }
-            )
-                .then((response) => response.json())
-                .then((jsonbody) => console.log(jsonbody))
-        }
+                })
+                    .then((response) => response.json())
+                    .then((jsonbody) => console.log(jsonbody))
+            } else {
+                fetch(
+                    "http://localhost:8888/incomplete?entry_id=" + id_from_db,
+                    {
+                        method: "PUT",
+                    }
+                )
+                    .then((response) => response.json())
+                    .then((jsonbody) => console.log(jsonbody))
+            }
+        })
 
         // Update label
         label.className = obj.completed ? "complete" : ""

@@ -11,7 +11,7 @@ venv/bin/pip install flask flask_cors &&
 venv/bin/python3 main.py
 ```
 
-You can then compile and start the frontend with (assuming you use firefox -- 
+You can then compile and start the frontend with (assuming you use firefox --
 change based off your browser of choice) :
 
 ``` bash

@@ -27,6 +27,25 @@ def getValue(update_id: int) -> str:
     return res
 
 
+@app.route("/check")
+def check() -> flask.Response:
+    name = flask.request.args["name"]
+
+    conn = sqlite3.connect("db.db")
+    cur = conn.cursor()
+    id = cur.execute(
+        f"SELECT id FROM entries WHERE value = '{name}'"
+    ).fetchone()[0]
+    conn.commit()
+    conn.close()
+
+    return flask.Response(
+        response=json.dumps(id),
+        status=201,
+        mimetype="application/json",
+    )
+
+
 # curl localhost:8888/getEntries
 @app.route("/getEntries")
 def get_entries() -> flask.Response:
