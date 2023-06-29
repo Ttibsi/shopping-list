@@ -10,6 +10,9 @@ cors = flask_cors.CORS(
     app, resources={r"/*": {"origins": "http://localhost:*"}}
 )
 
+# TODO: Only use a single database connection instead of one per filter
+# This can probably work as a class created in the if block
+
 
 @app.route("/")
 def hello_world() -> str:
@@ -133,4 +136,5 @@ def remove_from_db() -> flask.Response:
 
 
 if __name__ == "__main__":
+    conn = sqlite3.connect("db.db")
     app.run(port=8888)
