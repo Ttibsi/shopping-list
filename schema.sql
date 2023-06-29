@@ -4,4 +4,4 @@ CREATE TABLE entries (
     completed BOOLEAN
 );
 
-INSERT INTO entries VALUES (NULL, "myentry", FALSE), (NULL, "done", TRUE);
+INSERT INTO entries VALUES (NULL, "First", FALSE), (NULL, "Completed", TRUE), (NULL, "Click me to delete", FALSE);

@@ -3,6 +3,12 @@ A web application todo list app - I'm using this to gain some experience
 with Flask and to learn typescript.
 
 ### TO Run:
+Generate the database:
+
+```bash
+sqlite3 db.db < schema.sql
+```
+
 In one terminal window, launch the backend server with:
 
 ``` bash

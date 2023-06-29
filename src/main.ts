@@ -23,6 +23,7 @@ function generateContainer(obj: ShoppingItem): HTMLDivElement {
     label.htmlFor = obj.id.toString()
     label.className = obj.completed ? "complete" : ""
     label.textContent = obj.value
+    label.title = "Click to delete item..."
 
     label.addEventListener("click", (_) => {
         fetch("http://localhost:8888/remove?entry_id=" + obj.id.toString(), {
