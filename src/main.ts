@@ -18,6 +18,15 @@ function generateContainer(obj: ShoppingItem): HTMLDivElement {
     label.className = obj.completed ? "complete" : ""
     label.textContent = obj.value
 
+    label.addEventListener("click", (_) => {
+        fetch("http://localhost:8888/remove?entry_id=" + obj.id.toString(), {
+            method: "DELETE",
+        })
+            .then((response) => response.json())
+            .then((jsonbody) => console.log(jsonbody))
+        container.remove()
+    })
+
     input.addEventListener("change", (_) => {
         obj.completed = input.checked
         if (obj.completed) {
@@ -27,6 +36,8 @@ function generateContainer(obj: ShoppingItem): HTMLDivElement {
                     method: "PUT",
                 }
             )
+                .then((response) => response.json())
+                .then((jsonbody) => console.log(jsonbody))
         } else {
             fetch(
                 "http://localhost:8888/incomplete?entry_id=" +
@@ -35,6 +46,8 @@ function generateContainer(obj: ShoppingItem): HTMLDivElement {
                     method: "PUT",
                 }
             )
+                .then((response) => response.json())
+                .then((jsonbody) => console.log(jsonbody))
         }
 
         // Update label
