@@ -69,17 +69,24 @@ if (app) {
             })
         })
 
-    //TODO: Add entry box and make POST query
     const entry = document.createElement("div")
     entry.className = "container entrybar"
 
     const txt = document.createElement("input")
+    txt.placeholder = "Enter new item..."
     txt.addEventListener("keyup", (event) => {
         if (event.key == "Enter") {
-            //TODO: Update front end after this -- don't just refresh because 
-            // it's bad practice -- I think I want to get back the same data 
-            // fromm this endpoint and then load it into DOM that way
             sendToBack({ new_entry: txt.value })
+
+            frame.appendChild(
+                generateContainer({
+                    id: document.querySelectorAll("completed").length,
+                    value: txt.value,
+                    completed: false,
+                })
+            )
+
+            txt.value = ""
         }
     })
 
